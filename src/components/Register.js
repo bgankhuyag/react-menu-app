@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import  { Redirect,Link, Route } from 'react-router-dom';
 import axios from 'axios';
-import "./Login.css";
+import "../Login.css";
 
 function Register() {
   const [email, setEmail] = useState("");

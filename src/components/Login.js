@@ -5,9 +5,9 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import  { Redirect,Link, Route, Router } from 'react-router-dom';
-import Register from './Register.js';
+// import Register from './Register.js';
 import axios from 'axios';
-import "./Login.css";
+import "../Login.css";
 
 // <Router>
 //   <Route path="/register" component={Register} />
@@ -32,7 +32,13 @@ function Login() {
         console.log(response.data.error);
 
       } else {
-        localStorage.setItem('token', response.data.access_token);
+        const now = new Date();
+        const token = {
+      		value: response.data.access_token,
+      		expiry: now.getTime() + 3600000,
+      	}
+      	localStorage.setItem('token', JSON.stringify(token))
+        // localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('name', response.data.user.name);
         return <Redirect to='/home' />
       }
@@ -44,7 +50,9 @@ function Login() {
 
   return (
     <div className="Login">
-
+      <div className="container">
+      login
+      </div>
       <Form onSubmit={handleSubmit}>
         <Form.Group size="lg" controlId="email">
           <Form.Label>Email</Form.Label>
