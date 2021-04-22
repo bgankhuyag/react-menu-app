@@ -49,7 +49,7 @@ function Navigation(props) {
                   }`}
                 >
                   <Link class="nav-link" to="/login">
-                    <Button variant="outline-light">Login</Button>
+                    <Button variant="outline-light" size="sm">Login</Button>
                   </Link>
                 </li></Nav.Link>
                 <Nav.Link><li
@@ -58,7 +58,7 @@ function Navigation(props) {
                   }`}
                 >
                   <Link class="nav-link" to="/register">
-                    <Button variant="outline-light">Register</Button>
+                    <Button variant="outline-light" size="sm">Register</Button>
                   </Link>
                 </li></Nav.Link>
               </ul>
@@ -67,36 +67,6 @@ function Navigation(props) {
           </div>
         </Navbar>
       </div>
-        // <nav class="navbar navbar-expand navbar-dark bg-dark">
-        //   <div class="container">
-        //     <Link class="navbar-brand" to="/">
-        //       Home
-        //     </Link>
-        //
-        //     <div>
-        //       <ul class="navbar-nav ml-auto">
-        //         <li
-        //           class={`nav-item  ${
-        //             props.location.pathname === "/login" ? "active" : ""
-        //           }`}
-        //         >
-        //           <Link class="nav-link" to="/login">
-        //             Login
-        //           </Link>
-        //         </li>
-        //         <li
-        //           class={`nav-item  ${
-        //             props.location.pathname === "/register" ? "active" : ""
-        //           }`}
-        //         >
-        //           <Link class="nav-link" to="/register">
-        //             Register
-        //           </Link>
-        //         </li>
-        //       </ul>
-        //     </div>
-        //   </div>
-        // </nav>
     );
   } else {
     return (
@@ -151,46 +121,6 @@ function Navigation(props) {
           </div>
         </Navbar>
       </div>
-      //   <nav class="navbar navbar-expand navbar-dark bg-dark">
-      //     <div class="container">
-      //       <Link class="navbar-brand" to="/">
-      //         Home
-      //       </Link>
-      //
-      //       <div>
-      //         <ul class="navbar-nav ml-auto">
-      //           <li
-      //             class={`nav-item  ${
-      //               props.location.pathname === "/" ? "active" : ""
-      //             }`}
-      //           >
-      //             <Link class="nav-link" to="/">
-      //               Home
-      //               <span class="sr-only">(current)</span>
-      //             </Link>
-      //           </li>
-      //           <li
-      //             class={`nav-item  ${
-      //               props.location.pathname === "/about" ? "active" : ""
-      //             }`}
-      //           >
-      //             <Link class="nav-link" to="/about">
-      //               About
-      //             </Link>
-      //           </li>
-      //           <li
-      //             class={`nav-item  ${
-      //               props.location.pathname === "/contact" ? "active" : ""
-      //             }`}
-      //           >
-      //             <Link class="nav-link" to="/contact">
-      //               Contact
-      //             </Link>
-      //           </li>
-      //         </ul>
-      //       </div>
-      //     </div>
-      //   </nav>
     );
   }
 }
