@@ -20,7 +20,6 @@ function App() {
           <Route path="/about" exact component={() => <About />} />
           <Route path="/contact" exact component={() => <Contact />} />
         </Switch>
-        <Footer />
       </Router>
     </div>
   );

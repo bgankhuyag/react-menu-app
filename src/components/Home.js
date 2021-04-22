@@ -1,39 +1,53 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { Navigation, Footer, About, Contact } from ".";
+import {Carousel} from "react-bootstrap";
+import axios from 'axios';
+import "../Home.css";
 
 function Home() {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    axios.post('http://batbold.home/api/images', {
+      token: JSON.parse(localStorage.getItem('token')).value,
+    })
+    .then(function (response) {
+      if (response.data.success === false) {
+        console.log(response.data.error);
+
+      } else {
+        console.log(response.data);
+        setImages([]);
+        response.data.forEach(image => {
+          setImages((prev) => {
+            return [<img className="d-block w-100" src={image.name} />, ...prev];
+          });
+          console.log(images);
+        });
+      }
+    })
+  }, []);
+
+  const imageList = images.map(image => <li>{image}</li>);
+  const imageCarousel = images.map(image => <Carousel.Item>
+                                              {image}
+                                              <Carousel.Caption>
+                                                <h3>First slide label</h3>
+                                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                              </Carousel.Caption>
+                                            </Carousel.Item>);
+
   return (
     <div className="home">
       <div class="container">
-        <div class="row align-items-center my-5">
-          <div class="col-lg-7">
-            <img
-              class="img-fluid rounded mb-4 mb-lg-0"
-              src="http://placehold.it/900x400"
-              alt=""
-            />
-          </div>
-          <div class="col-lg-5">
-            <h1 class="font-weight-light">Home</h1>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
-            </p>
-            <Link class="nav-link" to="/about">
-              About
-            </Link>
-            <Link class="nav-link" to="/contact">
-              Contact
-            </Link>
-            <Switch>
-              <Route path="/about" exact component={() => <About />} />
-              <Route path="/contact" exact component={() => <Contact />} />
-            </Switch>
-          </div>
-        </div>
+        <h1>Welcome to a <br /> restaurant near you</h1>
+        <ul className="images-list">
+          {imageList}
+        </ul>
+        <Carousel>
+          {imageCarousel}
+        </Carousel>
       </div>
     </div>
   );

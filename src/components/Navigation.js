@@ -16,16 +16,13 @@ function Navigation(props) {
         console.log(response.data.error);
 
       } else {
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('name');
         // return <Redirect to='/' />
         history.push("/");
       }
     })
-    // .catch(function (error) {
-    //     console.log(error);
-    // });
   }
   if (localStorage.getItem('token') === null) {
     return (

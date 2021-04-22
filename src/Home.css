@@ -1,0 +1,33 @@
+.home .container h1{
+  padding: 20px 0px;
+  font-size: 5vw;
+  text-align: center;
+}
+
+.images-list{
+  text-align: center;
+  list-style-type: none;
+}
+
+.images-list li{
+  display: inline-block;
+  margin: 20px;
+}
+
+.images-list li img{
+  width: 8vw;
+  height: 8vw;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 1000px) {
+  .home .container h1{
+    font-size: 50px;
+  }
+
+  .images-list li img{
+    width: 100px;
+    height: 100px;
+  }
+}
