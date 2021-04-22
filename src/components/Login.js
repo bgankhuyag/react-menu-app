@@ -1,10 +1,9 @@
 // import logo from './logo.svg';
 // import './App.css';
 
-import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import  { Redirect,Link, Route, Router } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import {Form, Button, Alert} from "react-bootstrap";
+import  { Redirect,Link, Route, Router, useHistory} from 'react-router-dom';
 // import Register from './Register.js';
 import axios from 'axios';
 import "../Login.css";
@@ -16,6 +15,8 @@ import "../Login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const history = useHistory();
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -30,17 +31,29 @@ function Login() {
     .then(function (response) {
       if (response.data.success === false) {
         console.log(response.data.error);
-
+        setError(<Alert variant='danger'>
+          {response.data.error}
+        </Alert>);
       } else {
         const now = new Date();
         const token = {
       		value: response.data.access_token,
       		expiry: now.getTime() + 3600000,
       	}
-      	localStorage.setItem('token', JSON.stringify(token))
-        // localStorage.setItem('token', response.data.access_token);
-        localStorage.setItem('name', response.data.user.name);
-        return <Redirect to='/home' />
+        const role = {
+      		value: response.data.user.role,
+      		expiry: now.getTime() + 3600000,
+      	}
+        const name = {
+      		value: response.data.user.name,
+      		expiry: now.getTime() + 3600000,
+      	}
+      	localStorage.setItem('token', JSON.stringify(token));
+        // console.log(JSON.parse(localStorage.getItem('token')).value, response.data.access_token);
+        localStorage.setItem('role', JSON.stringify(role));
+        localStorage.setItem('name', JSON.stringify(name));
+        // return <Redirect to='/' />
+        history.push("/");
       }
     })
     // .catch(function (error) {
@@ -49,32 +62,33 @@ function Login() {
   }
 
   return (
-    <div className="Login">
-      <div className="container">
-      login
+    <div className="container">
+      <div className="Login">
+      {error}
+        <Form onSubmit={handleSubmit}>
+        <h3>login</h3>
+          <Form.Group size="lg" controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              autoFocus
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group size="lg" controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <Button block size="lg" type="submit" disabled={!validateForm()}>
+            Login
+          </Button>
+        </Form>
       </div>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group size="lg" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()}>
-          Login
-        </Button>
-      </Form>
     </div>
   );
 }

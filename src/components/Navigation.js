@@ -1,68 +1,120 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Redirect, Link, withRouter, useHistory } from "react-router-dom";
+import {Navbar, Button, Nav, Form, FormControl, NavDropdown} from "react-bootstrap";
+import axios from 'axios';
 
 function Navigation(props) {
+  const history = useHistory();
   // localStorage.removeItem('token');
+  function logout(event) {
+    event.preventDefault();
+    axios.post('http://batbold.home/api/auth/logout', {
+      token: JSON.parse(localStorage.getItem('token')).value,
+    })
+    .then(function (response) {
+      if (response.data.success === false) {
+        console.log(response.data.error);
+
+      } else {
+        localStorage.removeItem('token')
+        localStorage.removeItem('role');
+        localStorage.removeItem('name');
+        // return <Redirect to='/' />
+        history.push("/");
+      }
+    })
+    // .catch(function (error) {
+    //     console.log(error);
+    // });
+  }
   if (localStorage.getItem('token') === null) {
     return (
       <div className="navigation">
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
-          </Form>
-        </Navbar>
-        <nav class="navbar navbar-expand navbar-dark bg-dark">
-          <div class="container">
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <div className="container">
+          <Navbar.Brand href="#home">
             <Link class="navbar-brand" to="/">
               Home
             </Link>
-
-            <div>
-              <ul class="navbar-nav ml-auto">
-                <li
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+            </Nav>
+            <Nav>
+              <ul className="navbar-nav ml-auto">
+                <Nav.Link><li
                   class={`nav-item  ${
                     props.location.pathname === "/login" ? "active" : ""
                   }`}
                 >
                   <Link class="nav-link" to="/login">
-                    Login
+                    <Button variant="outline-light">Login</Button>
                   </Link>
-                </li>
-                <li
+                </li></Nav.Link>
+                <Nav.Link><li
                   class={`nav-item  ${
                     props.location.pathname === "/register" ? "active" : ""
                   }`}
                 >
                   <Link class="nav-link" to="/register">
-                    Register
+                    <Button variant="outline-light">Register</Button>
                   </Link>
-                </li>
+                </li></Nav.Link>
               </ul>
-            </div>
+            </Nav>
+          </Navbar.Collapse>
           </div>
-        </nav>
+        </Navbar>
       </div>
+        // <nav class="navbar navbar-expand navbar-dark bg-dark">
+        //   <div class="container">
+        //     <Link class="navbar-brand" to="/">
+        //       Home
+        //     </Link>
+        //
+        //     <div>
+        //       <ul class="navbar-nav ml-auto">
+        //         <li
+        //           class={`nav-item  ${
+        //             props.location.pathname === "/login" ? "active" : ""
+        //           }`}
+        //         >
+        //           <Link class="nav-link" to="/login">
+        //             Login
+        //           </Link>
+        //         </li>
+        //         <li
+        //           class={`nav-item  ${
+        //             props.location.pathname === "/register" ? "active" : ""
+        //           }`}
+        //         >
+        //           <Link class="nav-link" to="/register">
+        //             Register
+        //           </Link>
+        //         </li>
+        //       </ul>
+        //     </div>
+        //   </div>
+        // </nav>
     );
   } else {
     return (
       <div className="navigation">
-        <nav class="navbar navbar-expand navbar-dark bg-dark">
-          <div class="container">
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <div className="container">
+          <Navbar.Brand href="#home">
             <Link class="navbar-brand" to="/">
               Home
             </Link>
-
-            <div>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+            </Nav>
+            <Nav>
               <ul class="navbar-nav ml-auto">
-                <li
+                <Nav.Link><li
                   class={`nav-item  ${
                     props.location.pathname === "/" ? "active" : ""
                   }`}
@@ -71,8 +123,8 @@ function Navigation(props) {
                     Home
                     <span class="sr-only">(current)</span>
                   </Link>
-                </li>
-                <li
+                </li></Nav.Link>
+                <Nav.Link><li
                   class={`nav-item  ${
                     props.location.pathname === "/about" ? "active" : ""
                   }`}
@@ -80,8 +132,8 @@ function Navigation(props) {
                   <Link class="nav-link" to="/about">
                     About
                   </Link>
-                </li>
-                <li
+                </li></Nav.Link>
+                <Nav.Link><li
                   class={`nav-item  ${
                     props.location.pathname === "/contact" ? "active" : ""
                   }`}
@@ -89,12 +141,56 @@ function Navigation(props) {
                   <Link class="nav-link" to="/contact">
                     Contact
                   </Link>
-                </li>
+                </li></Nav.Link>
+                <Nav.Link><NavDropdown title={JSON.parse(localStorage.getItem('name')).value} id="collasible-nav-dropdown">
+                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                </NavDropdown></Nav.Link>
               </ul>
-            </div>
+            </Nav>
+          </Navbar.Collapse>
           </div>
-        </nav>
+        </Navbar>
       </div>
+      //   <nav class="navbar navbar-expand navbar-dark bg-dark">
+      //     <div class="container">
+      //       <Link class="navbar-brand" to="/">
+      //         Home
+      //       </Link>
+      //
+      //       <div>
+      //         <ul class="navbar-nav ml-auto">
+      //           <li
+      //             class={`nav-item  ${
+      //               props.location.pathname === "/" ? "active" : ""
+      //             }`}
+      //           >
+      //             <Link class="nav-link" to="/">
+      //               Home
+      //               <span class="sr-only">(current)</span>
+      //             </Link>
+      //           </li>
+      //           <li
+      //             class={`nav-item  ${
+      //               props.location.pathname === "/about" ? "active" : ""
+      //             }`}
+      //           >
+      //             <Link class="nav-link" to="/about">
+      //               About
+      //             </Link>
+      //           </li>
+      //           <li
+      //             class={`nav-item  ${
+      //               props.location.pathname === "/contact" ? "active" : ""
+      //             }`}
+      //           >
+      //             <Link class="nav-link" to="/contact">
+      //               Contact
+      //             </Link>
+      //           </li>
+      //         </ul>
+      //       </div>
+      //     </div>
+      //   </nav>
     );
   }
 }
