@@ -21,7 +21,10 @@ function New() {
         setBases([]);
         response.data.bases.forEach(base => {
           setBases((prev) => {
-            return [base.base, ...prev];
+            return [<div><label>
+                      <input onClick={clickBase} className="base" type="radio" id={base.base} value={base.base} name="base" />
+                      <img src={base.images.name} /><div className="description">{base.base}<br />₮{base.price}</div></label>
+                    </div>, ...prev];
           });
         });
         setCondiments([]);
@@ -40,9 +43,23 @@ function New() {
     })
   }, []);
 
-  const basesList = bases.map((base, i) => <input key={'base'+i} type="radio" value={base} name="base" />{base});
+  const basesList = bases.map((base, i) => <div className="bases" key={'base'+i}>{base}</div>);
   const condimentsList = condiments.map((condiment, i) => <div key={'condiment'+i}>{condiment}</div>);
   const toppingsList = toppings.map((topping, i) => <div key={'topping'+i}>{topping}</div>);
+
+  function clickBase(e) {
+    e.preventDefault();
+    console.log(e.target);
+    var baseOptions = document.getElementsByClassName('base');
+    for (var i = 0; i < baseOptions.length; i++) {
+      if (baseOptions[i].checked) {
+        console.log(baseOptions[i].parentElement.children[1]);
+        baseOptions[i].parentElement.children[1].style.border = "2px solid yellow";
+      } else {
+        baseOptions[i].parentElement.children[1].style.border = "2px solid #343a40";
+      }
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -63,40 +80,30 @@ function New() {
         selectedCondiments.push(item);
       }
     }
+    var selectedBase;
     console.log(selectedCondiments);
+    var selectedBase = "";
+    var baseOptions = document.getElementsByClassName('base');
+    for (var i = 0; i < baseOptions.length; i++) {
+      if (baseOptions[i].checked) {
+        console.log(baseOptions[i]);
+        selectedBase = baseOptions[i].value;
+      }
+    }
+    console.log(selectedBase);
   }
 
   return (
     <div className="contact">
-      <div class="container">
+      <div class="container form">
       Order
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control type="email" placeholder="Enter email" />
           </Form.Group>
-          <Form.Group as={Row}>
-            <Col sm={10}>
-              <Form.Check
-                type="radio"
-                label="first radio"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios1"
-              />
-              <Form.Check
-                type="radio"
-                label="second radio"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios2"
-              />
-              <Form.Check
-                type="radio"
-                label="third radio"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios3"
-              />
-            </Col>
-          </Form.Group>
+          <h4>Entree</h4>
+          {basesList}
           <div className="options">
             <div class="categories">
               <h4>Condiments</h4>
