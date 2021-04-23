@@ -102,11 +102,11 @@ function Navigation(props) {
                 </li></Nav.Link>
                 <Nav.Link><li
                   class={`nav-item  ${
-                    props.location.pathname === "/contact" ? "active" : ""
+                    props.location.pathname === "/new" ? "active" : ""
                   }`}
                 >
-                  <Link class="nav-link" to="/contact">
-                    Contact
+                  <Link className="nav-link" to="/new">
+                    New Order
                   </Link>
                 </li></Nav.Link>
                 <Nav.Link><NavDropdown title={JSON.parse(localStorage.getItem('name')).value} id="collasible-nav-dropdown">

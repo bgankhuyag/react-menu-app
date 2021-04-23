@@ -60,6 +60,9 @@ function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          <Form.Text className="text">
+            We'll never share your email with anyone else.
+          </Form.Text>
         </Form.Group>
         <Form.Group size="lg" controlId="password">
           <Form.Label>Password</Form.Label>

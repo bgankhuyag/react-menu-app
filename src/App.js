@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Footer, Home, About, Contact, Login, Register } from "./components";
+import { Navigation, Footer, Home, About, New, Login, Register } from "./components";
 function App() {
   var login = null;
   var reg = null;
@@ -18,7 +18,7 @@ function App() {
           {reg}
           <Route path="/" exact component={() => <Home />} />
           <Route path="/about" exact component={() => <About />} />
-          <Route path="/contact" exact component={() => <Contact />} />
+          <Route path="/new" exact component={() => <New />} />
         </Switch>
       </Router>
     </div>
