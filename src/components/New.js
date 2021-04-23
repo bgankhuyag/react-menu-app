@@ -96,12 +96,7 @@ function New() {
   return (
     <div className="contact">
       <div class="container form">
-      Order
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-          </Form.Group>
           <h4>Entree</h4>
           {basesList}
           <div className="options">
