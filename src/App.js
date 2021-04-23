@@ -6,11 +6,11 @@ function App() {
   var reg = null;
   var newItem = null;
 
-  const token = JSON.parse(localStorage.getItem('token')).value;
+  // const token = JSON.parse(localStorage.getItem('token')).value;
 
-  useEffect(() => {
-
-  }, [token]);
+  // useEffect(() => {
+  //
+  // }, [token]);
   if (!localStorage.getItem('token')) {
     login = <Route path="/login" exact component={() => <Login />} />;
     reg = <Route path="/register" exact component={() => <Register />} />;

@@ -1,0 +1,12 @@
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.submit {
+  float: right;
+}
+
+.container {
+  margin-top: 30px;
+}

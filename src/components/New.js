@@ -1,19 +1,14 @@
 import React, {useState, useEffect} from "react";
-import {Navbar, Button, Nav, Form, FormControl, NavDropdown} from "react-bootstrap";
+import {Navbar, Button, Nav, Form, FormControl, NavDropdown, Row, Col} from "react-bootstrap";
 import axios from 'axios';
+import '../New.css';
 
 function New() {
   const [bases, setBases] = useState([]);
   const [condiments, setCondiments] = useState([]);
   const [toppings, setToppings] = useState([]);
-  const [selectedBase, setSelectedBase] = useState("");
-  const [selectedCondiments, setSelectedCondiments] = useState([]);
-  const [selectedToppings, setSelectedToppings] = useState([]);
 
   useEffect(() => {
-    // setSelectedBase("");
-    // setSelectedToppings([]);
-    // setSelectedCondiments([]);
     axios.post('http://batbold.home/api/menu', {
       token: JSON.parse(localStorage.getItem('token')).value,
     })
@@ -23,48 +18,52 @@ function New() {
 
       } else {
         console.log(response.data.bases);
+        setBases([]);
+        response.data.bases.forEach(base => {
+          setBases((prev) => {
+            return [base.base, ...prev];
+          });
+        });
         setCondiments([]);
         response.data.condiments.forEach(condiment => {
           setCondiments((prev) => {
-            if (selectedCondiments.includes(condiment.condiment)) {
-              return [<Form.Check type="checkbox" onChange={(e) => click('condiments', e)} id={condiment.condiment} label={condiment.condiment} checked={true} />, ...prev];
-            } else {
-              return [<Form.Check type="checkbox" onChange={(e) => click('condiments', e)} id={condiment.condiment} label={condiment.condiment} />, ...prev];
-            }
+            return [<Form.Check type="checkbox" className="condiment" id={condiment.condiment} label={condiment.condiment} />, ...prev];
           });
         });
         setToppings([]);
         response.data.toppings.forEach(topping => {
           setToppings((prev) => {
-            return [<Form.Check type="checkbox" onClick={(e) => click('toppings', e)} id={topping.topping} label={topping.topping} />, ...prev];
+            return [<Form.Check type="checkbox" className="topping" id={topping.topping} label={topping.topping} />, ...prev];
           });
         });
       }
     })
-  }, [selectedCondiments]);
+  }, []);
 
+  const basesList = bases.map((base, i) => <input key={'base'+i} type="radio" value={base} name="base" />{base});
   const condimentsList = condiments.map((condiment, i) => <div key={'condiment'+i}>{condiment}</div>);
   const toppingsList = toppings.map((topping, i) => <div key={'topping'+i}>{topping}</div>);
 
-  function click(category, e) {
-    // e.preventDefault();
-    console.log(e.target.checked);
-    if (category == 'condiments') {
-      if (e.target.checked) {
-        setSelectedCondiments((prev) => { return [...prev, e.target.id];});
-        console.log(selectedCondiments);
-      } else {
-        setSelectedCondiments((prev) => prev.filter(
-          (condiment) => condiment !== e.target.id
-        ));
-        console.log(selectedCondiments);
+  function handleSubmit(e) {
+    e.preventDefault();
+    var toppingOptions = document.getElementsByClassName('topping');
+    const selectedToppings = [];
+    for (var i = 0; i < toppingOptions.length; i++) {
+      if (toppingOptions[i].firstChild.checked) {
+        var item = toppingOptions[i].firstChild.id;
+        selectedToppings.push(item);
       }
     }
-  }
-
-  function handleSubmit(e) {
-    console.log(condiments);
-    return false;
+    console.log(selectedToppings);
+    var condimentOptions = document.getElementsByClassName('condiment');
+    const selectedCondiments = [];
+    for (var i = 0; i < condimentOptions.length; i++) {
+      if (condimentOptions[i].firstChild.checked) {
+        var item = condimentOptions[i].firstChild.id;
+        selectedCondiments.push(item);
+      }
+    }
+    console.log(selectedCondiments);
   }
 
   return (
@@ -76,23 +75,40 @@ function New() {
             <Form.Label>Email address</Form.Label>
             <Form.Control type="email" placeholder="Enter email" />
           </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+          <Form.Group as={Row}>
+            <Col sm={10}>
+              <Form.Check
+                type="radio"
+                label="first radio"
+                name="formHorizontalRadios"
+                id="formHorizontalRadios1"
+              />
+              <Form.Check
+                type="radio"
+                label="second radio"
+                name="formHorizontalRadios"
+                id="formHorizontalRadios2"
+              />
+              <Form.Check
+                type="radio"
+                label="third radio"
+                name="formHorizontalRadios"
+                id="formHorizontalRadios3"
+              />
+            </Col>
           </Form.Group>
-          <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" onChange={click} label="Check me out" />
-          </Form.Group>
-          <Form.Group controlId="test">
-            <Form.Check type="checkbox" onClick={click} label="Check me out" />
-          </Form.Group>
-          <Form.Check type="checkbox" onClick={(e) => click('category', e)} label="Check me out" className="category" id="category" />
-          <Form.Check type="checkbox" onClick={() => click('category')} label="Check me out" className="category" id="categor" />
-          {condimentsList}
-          {toppingsList}
-          <Button block size="lg" type="submit">
-            Login
+          <div className="options">
+            <div class="categories">
+              <h4>Condiments</h4>
+              {condimentsList}
+            </div>
+            <div className="toppings">
+              <h4>Toppings</h4>
+              {toppingsList}
+            </div>
+          </div>
+          <Button className="submit" variant="primary" type="submit">
+            Submit Order
           </Button>
         </Form>
       </div>

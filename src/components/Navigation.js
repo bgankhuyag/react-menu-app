@@ -2,12 +2,13 @@ import React, {useEffect} from "react";
 import { Redirect, Link, withRouter, useHistory } from "react-router-dom";
 import {Navbar, Button, Nav, Form, FormControl, NavDropdown} from "react-bootstrap";
 import axios from 'axios';
+import '../Navigation.css';
 
 function Navigation(props) {
   const history = useHistory();
   // localStorage.removeItem('token');
   function logout(event) {
-    event.preventDefault();
+    // event.preventDefault();
     axios.post('http://batbold.home/api/auth/logout', {
       token: JSON.parse(localStorage.getItem('token')).value,
     })
@@ -58,7 +59,7 @@ function Navigation(props) {
                   }`}
                 >
                   <Link class="nav-link" to="/login">
-                    <Button variant="outline-light" size="sm">Login</Button>
+                    <Button variant="light" size="sm">Login</Button>
                   </Link>
                 </li></Nav.Link>
                 <Nav.Link><li
