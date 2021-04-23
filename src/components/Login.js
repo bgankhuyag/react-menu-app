@@ -64,7 +64,7 @@ function Login() {
   return (
     <div className="container">
       <div className="Login">
-      {error}
+        {error}
         <Form onSubmit={handleSubmit}>
         <h3>Login</h3>
           <Form.Group size="lg" controlId="email">

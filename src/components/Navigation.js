@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Redirect, Link, withRouter, useHistory } from "react-router-dom";
 import {Navbar, Button, Nav, Form, FormControl, NavDropdown} from "react-bootstrap";
 import axios from 'axios';
@@ -24,6 +24,18 @@ function Navigation(props) {
       }
     })
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      const now = new Date();
+      if (JSON.parse(localStorage.getItem('token')).expiry <= now.getTime()) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('name');
+      }
+    }
+  }, [localStorage.getItem('token')]);
+
   if (localStorage.getItem('token') === null) {
     return (
       <div className="navigation">
