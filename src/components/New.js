@@ -26,12 +26,13 @@ function New() {
                         <input className="base" type="radio" id={base.base} name="base" />
                       </div>
                       <div className="description">
-                        <div style={{width: '140px'}}><img src={base.images.name} /></div>
+                        <img src={base.images.name} />
                         <div>
                           <div className="description-label">{base.base}</div>
                           <div className="description-extra">{base.description}</div>
                           <div className="description-price">₮{base.price}</div>
                         </div>
+                        <div className="description-quantity">Quantity: <input type="number" min="0" /></div>
                       </div>
                     </div>, ...prev];
           });
