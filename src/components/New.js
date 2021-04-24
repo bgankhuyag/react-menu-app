@@ -21,9 +21,18 @@ function New() {
         setBases([]);
         response.data.bases.forEach(base => {
           setBases((prev) => {
-            return [<div><label>
-                      <input onClick={clickBase} className="base" type="radio" id={base.base} value={base.base} name="base" />
-                      <img src={base.images.name} /><div className="description">{base.base}<br />₮{base.price}</div></label>
+            return [<div>
+                      <div className="base-input">
+                        <input className="base" type="radio" id={base.base} name="base" />
+                      </div>
+                      <div className="description">
+                        <div style={{width: '140px'}}><img src={base.images.name} /></div>
+                        <div>
+                          <div className="description-label">{base.base}</div>
+                          <div className="description-extra">{base.description}</div>
+                          <div className="description-price">₮{base.price}</div>
+                        </div>
+                      </div>
                     </div>, ...prev];
           });
         });
@@ -43,20 +52,19 @@ function New() {
     })
   }, []);
 
-  const basesList = bases.map((base, i) => <div className="bases" key={'base'+i}>{base}</div>);
+  const basesList = bases.map((base, i) => <label key={'base'+i} onClick={clickBase}><div className="bases">{base}</div></label>);
   const condimentsList = condiments.map((condiment, i) => <div key={'condiment'+i}>{condiment}</div>);
   const toppingsList = toppings.map((topping, i) => <div key={'topping'+i}>{topping}</div>);
 
   function clickBase(e) {
-    e.preventDefault();
-    console.log(e.target);
+    // e.preventDefault();
     var baseOptions = document.getElementsByClassName('base');
     for (var i = 0; i < baseOptions.length; i++) {
       if (baseOptions[i].checked) {
-        console.log(baseOptions[i].parentElement.children[1]);
-        baseOptions[i].parentElement.children[1].style.border = "2px solid yellow";
+        // console.log(baseOptions[i].parentElement);
+        baseOptions[i].parentElement.parentElement.parentElement.style.border = "2px solid yellow";
       } else {
-        baseOptions[i].parentElement.children[1].style.border = "2px solid #343a40";
+        baseOptions[i].parentElement.parentElement.parentElement.style.border = "2px solid grey";
       }
     }
   }
@@ -83,11 +91,11 @@ function New() {
     var selectedBase;
     console.log(selectedCondiments);
     var selectedBase = "";
-    var baseOptions = document.getElementsByClassName('base');
+    var baseOptions = document.getElementsByName('base');
     for (var i = 0; i < baseOptions.length; i++) {
       if (baseOptions[i].checked) {
-        console.log(baseOptions[i]);
-        selectedBase = baseOptions[i].value;
+        // console.log(baseOptions[i].id);
+        selectedBase = baseOptions[i].id;
       }
     }
     console.log(selectedBase);
@@ -98,7 +106,9 @@ function New() {
       <div class="container form">
         <Form onSubmit={handleSubmit}>
           <h4>Entree</h4>
-          {basesList}
+          <div className="base-options">
+            {basesList}
+          </div>
           <div className="options">
             <div class="categories">
               <h4>Condiments</h4>
